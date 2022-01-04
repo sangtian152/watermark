@@ -1,8 +1,8 @@
 {
   "name": "@sangtian152/watermark",
   "version": "1.0.0",
-  "description": "",
-  "main": "lib/waterMark.umd.js",
+  "description": "图片加文字水印、图片水印，支持多行",
+  "main": "lib/watermark.umd.js",
   "private": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
