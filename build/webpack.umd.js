@@ -11,11 +11,11 @@ const umdWebpackConfig = merge(webpackConfig, {
     clean: true, // 在生成文件之前清空 output 目录
     path: path.resolve(process.cwd(), './lib'),
     publicPath: '/dist/',
-    filename: 'html2pdf.umd.js',
+    filename: 'watermark.umd.js',
     // chunkFilename: '[name].js',
     libraryTarget: 'umd',
     libraryExport: 'default',
-    library: 'html2pdf',
+    library: 'watermark',
     umdNamedDefine: true,
     globalObject: 'typeof self !== \'undefined\' ? self : this'
   },

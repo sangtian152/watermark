@@ -10,10 +10,10 @@ module.exports = {
   output: {
     path: path.resolve(process.cwd(), './lib'),
     publicPath: '/dist/',
-    filename: 'html2pdf.common.js',
+    filename: 'watermark.common.js',
     chunkFilename: '[name].js',
     libraryExport: 'default',
-    library: 'html2pdf',
+    library: 'watermark',
     libraryTarget: 'commonjs2'
   },
   resolve: {
