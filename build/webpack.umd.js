@@ -18,12 +18,7 @@ const umdWebpackConfig = merge(webpackConfig, {
     library: 'watermark',
     umdNamedDefine: true,
     globalObject: 'typeof self !== \'undefined\' ? self : this'
-  },
- 
-  externals: {
-    html2canvas: config.html2canvas,
-    jspdf: config.jspdf
-  },
+  }
 })
 
 module.exports = umdWebpackConfig
