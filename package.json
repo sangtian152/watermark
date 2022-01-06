@@ -1,6 +1,6 @@
 {
   "name": "@sangtian152/watermark",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "图片加文字水印、图片水印，支持多行",
   "main": "lib/watermark.umd.js",
   "private": false,
@@ -9,7 +9,11 @@
     "dev": "webpack-dev-server --progress --config build/webpack.dev.js",
     "build:lib": "webpack --config build/webpack.umd.js && webpack --config build/webpack.common.js"
   },
-  "keywords": [],
+  "keywords": ["watermark", "javascript"],
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/sangtian152/watermark.git"
+  },
   "author": "sangtian152",
   "license": "MIT",
   "devDependencies": {
