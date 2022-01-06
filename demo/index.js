@@ -1,4 +1,4 @@
-import watermark from 'watermark'
+import watermark from 'src/index'
 const src = require('src/static/demo.jpg').default
 const mark = require('src/static/mark.png').default
 
