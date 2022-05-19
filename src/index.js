@@ -2,9 +2,9 @@ import { validNum } from '@/utils/validate'
 import { getTranslate, getPosition, getSpacing } from '@/utils/measure'
 import { dataURLtoBlob, blobToFile } from '@/utils/file'
 import EventQueue from '@/utils/eventQueue'
-const eventQueue = new EventQueue()
 class watermark {
   constructor(url, options) {
+    this.eventQueue = new EventQueue()
     this.canvas = null;
     this.image = null;
     this.ctx = null;
@@ -67,20 +67,20 @@ class watermark {
     this.ctx.rotate(-(rotate * Math.PI) / 180); // 水印初始偏转角度
   }
   addText(...arg) {
-    eventQueue.add(this.drawText.bind(this), arg)
+    this.eventQueue.add(this.drawText.bind(this), arg)
   }
   addImage(...arg) {
-    eventQueue.add(this.drawImage.bind(this), arg)
+    this.eventQueue.add(this.drawImage.bind(this), arg)
   }
   draw(cb) {
-    eventQueue.end = cb
+    this.eventQueue.end = cb
     this.waiting = true
     this.run()
   }
   run() {
     if(!this.loading) {
       this.waiting = false
-      eventQueue.start()
+      this.eventQueue.start()
     }
   }
   // 绘制文字水印
@@ -105,7 +105,7 @@ class watermark {
       const { x, y } = getPosition({width: textWidth, height: fontSize}, opt)
       const { translateX, translateY } = getTranslate({width: textWidth, height: fontSize}, opt.translate)
       ctx.fillText(mark, x + translateX, fontSize + y + translateY);
-      eventQueue.next()
+      this.eventQueue.next()
       return;
     }
     opt.start = opt.start + fontSize
@@ -115,7 +115,7 @@ class watermark {
       // 填充文字，x 间距, y 间距
       ctx.fillText(mark, x, y);
     })
-    eventQueue.next()
+    this.eventQueue.next()
   }
   // 添加图片水印
   drawImage(mark, options) {
@@ -147,7 +147,7 @@ class watermark {
                 // 填充文字，x 间距, y 间距
                 ctx.drawImage(markImg, x + translateX, y + translateY, _width, _height);
                 resolve(_this)
-                eventQueue.next()
+                _this.eventQueue.next()
                 return;
             }
             const moveY = getSpacing(_height, lineSpacing);
@@ -158,7 +158,7 @@ class watermark {
               ctx.drawImage(markImg, x, y, _width, _height);
             })
             resolve(_this)
-            eventQueue.next()
+            _this.eventQueue.next()
         };
         markImg.src = mark;
     })
@@ -183,7 +183,7 @@ class watermark {
     this.canvas = null;
     this.image = null;
     this.ctx = null;
-    eventQueue = null
+    this.eventQueue = null
   }
 }
 
