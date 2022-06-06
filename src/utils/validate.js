@@ -4,3 +4,6 @@ export const isPercent = function(string) {
 export const validNum = function(value) {
     return !isNaN(parseFloat(value))
 }
+export const isObject = function(obj) {
+    return Object.prototype.toString.call(obj) === '[object Object]'
+}

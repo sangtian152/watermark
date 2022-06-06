@@ -1,5 +1,5 @@
-import { validNum } from '@/utils/validate'
-import { getTranslate, getPosition, getSpacing } from '@/utils/measure'
+import { validNum, isObject } from '@/utils/validate'
+import { getTranslate, getPosition, getSpacing, transferPadding, pad2distance } from '@/utils/measure'
 import { dataURLtoBlob, blobToFile } from '@/utils/file'
 import EventQueue from '@/utils/eventQueue'
 class watermark {
@@ -19,6 +19,8 @@ class watermark {
       globalAlpha: 0.2,
       rotate: -45,
       repeat: false,
+      clip: null,
+      defineClip: null,
       position: { top: 10, left: 10 },
       translate: 0,
       crossOrigin: false,
@@ -27,8 +29,9 @@ class watermark {
     };
     this.init(options)
   }
-  init(options) {
-    this.options = Object.assign(this.options, options);
+  init(opt) {
+    this.options = Object.assign(this.options, opt);
+    const { options } = this;
     return new Promise((resolve, reject) => {
       this.image = new Image();
       this.image.crossOrigin = this.crossOrigin
@@ -36,8 +39,8 @@ class watermark {
         const { image } = this;
         let imgWidht = image.naturalWidth;
         let imgHeight = image.naturalHeight;
-        this.options.width = this.options.width || imgWidht;
-        this.options.height = this.options.height || imgHeight;
+        options.width = options.width || imgWidht;
+        options.height = options.height || imgHeight;
         this.canvas = document.createElement("canvas");
         this.canvas.setAttribute("id", "__compress__");
         this.canvas.width = imgWidht;
@@ -46,6 +49,28 @@ class watermark {
         this.ctx = this.canvas.getContext("2d");
         this.ctx.clearRect(0, 0, imgWidht, imgHeight);
         this.ctx.drawImage(image, 0, 0, imgWidht, imgHeight); // 渲染图片
+        // 规定一个区域内添加水印
+        const { clip, defineClip } = options;
+        if (typeof defineClip === 'function') {
+          defineClip(this.ctx);
+          this.ctx.clip();
+        } else if(isObject(clip)) {
+          const { shape, padding } = clip;
+          const pad = transferPadding(padding);
+          const tp = pad2distance(imgHeight, pad.top);
+          const rt = pad2distance(imgWidht, pad.right);
+          const bt = pad2distance(imgHeight, pad.bottom);
+          const lf = pad2distance(imgWidht, pad.left);
+          const w = imgWidht - lf - rt;
+          const h = imgHeight - tp - bt;
+          if (shape === 'rect') {
+            this.ctx.rect(lf, tp, w, h);
+          } else if (shape === 'circle') {
+            const r = Math.min(w, h) / 2;
+            this.ctx.arc(lf + r, tp + r, r, 0, Math.PI * 2, false);
+          }
+          this.ctx.clip();
+        }
         this.loading = false
         if(this.waiting) {
           this.run()

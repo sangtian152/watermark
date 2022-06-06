@@ -47,6 +47,8 @@ can.draw(function() {
 
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
+| clip   | 添加水印区域，如：{type: 'rect', padding: '10%'}，type形状，可选值rect和circle，padding边距（参考css中padding用法），接受数组或逗号（,）隔开的字符串，支持百分数和数字  | Object        |  —   |   —   |
+| defineClip   | 自定义水印区域，参数为canvas的context对象，支持调用canvas原生方法，绘制任意形状水印区域   | Function        |  —   |   —   |
 | fontSize   | 文字水印字体大小   | Number        |  —   |   26   |
 | fillStyle   | 文字水印字体颜色   | String  |  —   |  #ffffff   |
 | globalAlpha   | 水印透明度   | Number  |  0-1之间小数   |  0.2   |
