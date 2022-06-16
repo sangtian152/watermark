@@ -1,3 +1,4 @@
+// 判断百分数
 export const isPercent = function(string) {
     return typeof string === 'string' && string.includes('%')
 }

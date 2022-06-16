@@ -1,4 +1,5 @@
 import { isPercent, validNum } from '@/utils/validate'
+// 计算水印的偏移
 export function getTranslate(mark, translate) {
   if(!translate) {
     return { translateX: 0, translateY: 0 }
@@ -27,6 +28,7 @@ export function getTranslate(mark, translate) {
   }
   return { translateX, translateY }
 }
+// 计算水印位置
 export function getPosition(mark, options) {
   const { width, height, position } = options;
   const { top, right, bottom, left } = position
@@ -46,6 +48,7 @@ export function getPosition(mark, options) {
   }
   return { x, y }
 }
+// 计算水印之间间隔
 export function getSpacing(size, spacing) {
   if(!validNum(spacing)) {
     return size
@@ -56,7 +59,8 @@ export function getSpacing(size, spacing) {
     return size + parseFloat(spacing)
   }
 }
-export function transferPadding(padding){
+// 转换边距
+export function transferPadding(padding = '0'){
   const arr = Array.isArray(padding) ? padding : padding.split(',');
   const pad = {
       top: 0,
@@ -72,9 +76,8 @@ export function transferPadding(padding){
   }
   return pad
 }
-
+// 将边距百分比、像素等统一转换成像素距离
 export function pad2distance(size, pad) {
-  console.log(size, pad)
   if(isPercent(pad)) {
     return parseFloat(pad) / 100 * size
   } else {

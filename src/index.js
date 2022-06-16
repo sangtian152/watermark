@@ -4,28 +4,33 @@ import { dataURLtoBlob, blobToFile } from '@/utils/file'
 import EventQueue from '@/utils/eventQueue'
 class watermark {
   constructor(url, options) {
+    // 时间队列
     this.eventQueue = new EventQueue()
     this.canvas = null;
     this.image = null;
     this.ctx = null;
+    // 待添加水印图片地址
     this.url = url;
+    // 添加水印执行状态
     this.waiting = false
+    // 待添加水印图片加载
     this.loading = true
+    // 默认参数
     this.options = {
       start: 0,
-      quality: 0.6,
-      fontSize: 16,
-      fillStyle: "#fff",
-      globalAlpha: 0.2,
-      rotate: -45,
-      repeat: false,
-      clip: null,
-      defineClip: null,
-      position: { top: 10, left: 10 },
-      translate: 0,
-      crossOrigin: false,
-      markSpacing: '50%',
-      lineSpacing: 60
+      quality: 0.6, // 生成图片质量
+      fontSize: 16, // 文字水印字号
+      fillStyle: "#fff", // 文字水印颜色
+      globalAlpha: 0.2, // 水印透明度
+      rotate: -45,  // 水印旋转角度
+      repeat: false,  // 水印是否重复
+      clip: null,  // 设置添加水印的区域，接受对象，含shape（形状）, padding（边距）
+      defineClip: null, // 自定义添加水印的区域的方法
+      position: { top: 10, left: 10 }, // 水印位置
+      translate: 0, // 水印偏移
+      crossOrigin: false, // 是否跨域
+      markSpacing: '50%', // 水印间距
+      lineSpacing: 60 // 水印行间距
     };
     this.init(options)
   }
@@ -55,7 +60,7 @@ class watermark {
           defineClip(this.ctx);
           this.ctx.clip();
         } else if(isObject(clip)) {
-          const { shape, padding } = clip;
+          const { shape = 'rect', padding } = clip;
           const pad = transferPadding(padding);
           const tp = pad2distance(imgHeight, pad.top);
           const rt = pad2distance(imgWidht, pad.right);
@@ -80,7 +85,7 @@ class watermark {
       this.image.src = this.url;
     });
   }
-  
+  // 重复添加水印
   repeat({moveX, moveY}, opt, cb) {
     const { width, height, rotate, start } = opt;
     this.ctx.rotate((rotate * Math.PI) / 180); // 水印初始偏转角度
@@ -91,17 +96,21 @@ class watermark {
     }
     this.ctx.rotate(-(rotate * Math.PI) / 180); // 水印初始偏转角度
   }
+  // 添加文字水印事件到事件队列中
   addText(...arg) {
     this.eventQueue.add(this.drawText.bind(this), arg)
   }
+  // 添加图片水印事件到事件队列中
   addImage(...arg) {
     this.eventQueue.add(this.drawImage.bind(this), arg)
   }
+  // 开始执行绘制水印
   draw(cb) {
     this.eventQueue.end = cb
     this.waiting = true
     this.run()
   }
+  // 运行事件队列
   run() {
     if(!this.loading) {
       this.waiting = false
@@ -167,7 +176,7 @@ class watermark {
             }
             ctx.globalAlpha = globalAlpha;
             if (!repeat) {
-                const { x, y } = _getPosition({width: _width, height: _height}, opt)
+                const { x, y } = getPosition({width: _width, height: _height}, opt)
                 const { translateX, translateY } = getTranslate({width: _width, height: _height}, opt.translate)
                 // 填充文字，x 间距, y 间距
                 ctx.drawImage(markImg, x + translateX, y + translateY, _width, _height);
