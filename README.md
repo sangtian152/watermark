@@ -1,4 +1,5 @@
-# watermark
+
+[![OSCS Status](https://www.oscs1024.com/platform/badge/sangtian152/watermark.svg?size=small)](https://www.murphysec.com/dr/dmBdvWQwRPWkT1TNsW)
 
 ## 介绍
 图片加水印，支持文字水印、图片水印，支持多行
