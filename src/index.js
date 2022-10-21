@@ -129,21 +129,22 @@ class watermark {
       lineSpacing
     } = opt;
     const { ctx } = this
+    const _fontSize = parseFloat(fontSize)
     ctx.fillStyle = fillStyle;
-    ctx.font = fontSize + "px 黑体";
+    ctx.font = _fontSize + "px 黑体";
     ctx.globalAlpha = globalAlpha;
     const textSize = ctx.measureText(mark)
     const textWidth = textSize.width
     if (!repeat) {
       // 填充文字，x 间距, y 间距
-      const { x, y } = getPosition({width: textWidth, height: fontSize}, opt)
-      const { translateX, translateY } = getTranslate({width: textWidth, height: fontSize}, opt.translate)
-      ctx.fillText(mark, x + translateX, fontSize + y + translateY);
+      const { x, y } = getPosition({width: textWidth, height: _fontSize}, opt)
+      const { translateX, translateY } = getTranslate({width: textWidth, height: _fontSize}, opt.translate)
+      ctx.fillText(mark, x + translateX, _fontSize + y + translateY);
       this.eventQueue.next()
       return;
     }
-    opt.start = opt.start + fontSize
-    const moveY = getSpacing(fontSize, lineSpacing);
+    opt.start = opt.start + _fontSize
+    const moveY = getSpacing(_fontSize, lineSpacing);
     const moveX = getSpacing(textWidth, markSpacing);
     this.repeat({moveX, moveY}, opt, function(x, y){
       // 填充文字，x 间距, y 间距
