@@ -1,6 +1,6 @@
 {
   "name": "@sangtian152/watermark",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "图片加文字水印、图片水印，支持多行",
   "main": "lib/watermark.umd.js",
   "private": false,

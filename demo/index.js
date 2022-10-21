@@ -8,6 +8,7 @@ window.onload = function() {
 document.getElementById('create').onclick = function(){
     const ele = document.getElementById('img')
     const can = new watermark(src, {
+      quality: '1',
       fontSize: 26,
       fillStyle: '#fff',
       globalAlpha: 0.5,

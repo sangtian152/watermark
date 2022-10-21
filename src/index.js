@@ -201,7 +201,7 @@ class watermark {
   }
 
   getBase64() {
-    return this.canvas.toDataURL("image/jpeg", this.options.quality); // 压缩图片
+    return this.canvas.toDataURL("image/jpeg", parseFloat(this.options.quality)); // 压缩图片
   }
 
   getBlob() {
